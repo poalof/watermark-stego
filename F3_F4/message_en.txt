@@ -1,0 +1,35 @@
+In the previous section, we introduced matrix embedding as a means for
+decreasing the number of embedding changes and thus reducing the statistical impact of embedding a message into a cover Work. Besides making fewer
+embedding changes, the sender may attempt to restrict the embedding to those
+parts of the cover Work where it is intuitively more difficult to detect the
+changes. The rule used to select the placement of embedding changes is called
+the selection rule. If the selection rule is only known to the sender but not to
+the recipient, we speak of a nonshared selection rule.
+To motivate the need for nonshared selection rules in steganography,
+imagine the following situation. The sender has a raw, never compressed
+image and wants to embed information in its JPEG compressed form. Can the
+knowledge of the raw image help us better conceal the embedding changes?
+Intuitively, it should. For example, when compressing the image, the sender
+can inspect the DCT coefficients after they are divided by the associated quantization steps but before they are rounded to integers, and select for embedding
+those coefficients whose fractional part is close to 0.5. Such coefficients experience the largest quantization error during JPEG compression and the smallest
+combined error (rounding + embedding) if rounded to the other value. When
+rounding the coefficient 5.47, for instance, we can embed a bit by rounding it
+to 5 or to 6. The rounding distortion (without embedding) is 0.47. If embedding requires rounding to 6, the combined rounding and embedding distortion
+is only slightly larger, 0.53. The obvious problem with this idea, however, is that
+the recipient will not be able to tell which DCT coefficients in the stego JPEG
+file were used for embedding, because it is not possible to completely undo the
+loss due to rounding by JPEG compression. This is an example of a situation in
+which the sender cannot share the selection rule with the recipient.
+The problem of nonshared or partially shared selection rules occurs quite
+frequently in steganography. Consider, for example, adaptive steganography [71,
+220] where the pixels in the cover Work are chosen using a selection rule based
+on their neighborhood. Because the act of embedding itself modifies the pixel
+values, then, depending on the selection rule, it is possible that the recipient
+will not recover the same set of message-carrying pixels as the sender. As an
+example, consider the following selection rule. The sender calculates for each
+pixel in the cover Work the variance of all pixels in its local 3 × 3 neighborhood
+and embeds m message bits using LSB embedding into the LSBs of m pixels.
+with the largest local variance. When the same selection rule is applied by
+the recipient of the stego image, it may well happen that the m pixels with
+the largest local variance will not be completely the same as those selected
+by the sender. This may prevent the recipient from extracting the message.
